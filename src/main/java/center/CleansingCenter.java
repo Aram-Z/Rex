@@ -15,7 +15,7 @@ public class CleansingCenter {
 
     }
 
-    void addAnimal(Animal animal, AdoptionCenter adoptionCenter) {
+    public void addAnimal(Animal animal, AdoptionCenter adoptionCenter) {
         animals.put(animal, adoptionCenter);
     }
 
@@ -39,6 +39,19 @@ public class CleansingCenter {
         }
 
         animals.clear();
+    }
+
+    public int animalsAwaitingClensed(){
+        int waitingAnimal = 0;
+        if(animals.size() != 0){
+            for (Map.Entry<Animal, AdoptionCenter> entry : animals.entrySet()) {
+                Animal animal = entry.getKey();
+                if(animal.isCleansed() == false){
+                    waitingAnimal++;
+                }
+            }
+        }
+        return waitingAnimal;
     }
 }
 

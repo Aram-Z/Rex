@@ -31,7 +31,7 @@ public class AdoptionCenter {
        animals.removeIf(animal -> animal.isCleansed() == false);
     }
 
-    private int adoptigAnimal() {
+    public int adoptigAnimal() {
         List<Animal> clinsedanimallist =new ArrayList<>();
         int adoptedCount = 0;
         if(animals.size() != 0) {
@@ -48,6 +48,20 @@ public class AdoptionCenter {
         return adoptedCount;
 
     }
+
+    public int animalsAwaitingAdoption() {
+        int waitingAnimal = 0;
+        if(animals.size() != 0){
+            for (int i = 0; i < animals.size(); i++) {
+                if(animals.get(i).isCleansed() == true){
+                    waitingAnimal++;
+                }
+            }
+        }
+        return waitingAnimal;
+    }
+
+
 
     public String getName() {
         return name;

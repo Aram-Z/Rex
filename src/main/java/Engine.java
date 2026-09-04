@@ -5,18 +5,17 @@ import center.AdoptionCenter;
 import center.CleansingCenter;
 import userInterface.UserInterface;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static javax.swing.plaf.synth.Region.SEPARATOR;
+
 
 public class Engine {
     private boolean isRunning;
     private final UserInterface userInterface;
     private Map<String, AdoptionCenter> adoptionCenters = new HashMap<>();
-    private CleansingCenter cleansingCenter;
+    private CleansingCenter cleansingCenter= new CleansingCenter();
     private int adoptedAnimals = 0;
     private static final String SEPARATOR = "\n";
 
@@ -56,24 +55,19 @@ public class Engine {
                 cleansingCenter.cleanse();
                 break;
 
-                case "Adopt":
+            case "Adopt":
                 adoptedAnimals += adoptionCenters.get(commandList[1]).adoptigAnimal();
-                    break;
-
-            case "PrintStatus":
-//                printStatus();
                 break;
+
             case "Quit":
                 stop();
+                printStatus();
                 break;
+
             default:
                 invalidCommand();
         }
     }
-
-
-
-
 
 
     protected void registerDog(String[] commandList) {
@@ -97,8 +91,6 @@ public class Engine {
     }
 
 
-
-
     protected void stop() {
         this.isRunning = false;
     }
@@ -106,20 +98,6 @@ public class Engine {
     protected void invalidCommand() {
         userInterface.invalidCommand();
     }
-
-    protected void registerAnimal(String command) {
-        String[] animalCreator = commandSplitter(command);
-        String name = animalCreator[1];
-        int age = Integer.parseInt(animalCreator[2]);
-        if (animalCreator[0].equals("RegisterDog")) {
-            int learnedCommands = Integer.parseInt(animalCreator[3]);
-        } else if (animalCreator[0].equals("RegisterCat")) {
-            int intelligenceCoefficient = Integer.parseInt(animalCreator[3]);
-
-        }
-
-    }
-
 
     protected String[] commandSplitter(String command) {
         String[] parts = command.split("\\| ");
@@ -129,19 +107,29 @@ public class Engine {
         return parts;
     }
 
-//    protected void printStatus(Animal animal) {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Animal name: ").append(animal.getName()).append(SEPARATOR)
-//                .append("Age: ").append(animal.getAge()).append(SEPARATOR)
-//                .append("Skill: ").append(animal.getSkill()).append(SEPARATOR)
-//                .append("Camps: ").append(animal.getCampList().size());
-//        if (!animal.getCampList().isEmpty()) {
-//            for (Camp camp : animal.getCampList()) {
-//                sb.append(camp);
-//            }
-//        }
-//        this.userInterface.printMessage(sb.toString());
-//    }
+    public int allAdaptionsWitingsAnimals() {
+        int waitingAnimals = 0;
+        if(adoptionCenters.size() != 0){
+            for (Map.Entry<String, AdoptionCenter> entry : adoptionCenters.entrySet()) {
+                AdoptionCenter adoptionCenter = entry.getValue();
+                waitingAnimals += adoptionCenter.animalsAwaitingAdoption();
+            }
+        }
+        return waitingAnimals;
+    }
+
+    protected void printStatus() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Rex Incorporated Regular Statistics").append(SEPARATOR)
+                .append("Adoption Centers: ").append(adoptionCenters.size()).append(SEPARATOR)
+                .append("Adopted Animals: ").append(adoptedAnimals).append(SEPARATOR)
+                .append("Animals Awaiting Adoption: ").append(allAdaptionsWitingsAnimals()).append(SEPARATOR)
+                .append("Animals Awaiting Cleansing: ").append(cleansingCenter.animalsAwaitingClensed());
+
+
+
+        this.userInterface.printMessage(sb.toString());
+    }
 
 
 }
