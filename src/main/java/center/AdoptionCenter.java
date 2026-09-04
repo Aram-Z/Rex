@@ -9,6 +9,7 @@ public class AdoptionCenter {
 
     private String name;
     private List<Animal> animals;
+    private int adoptedAnimals;
 
     public AdoptionCenter(String name) {
         this.name = name;
@@ -30,11 +31,27 @@ public class AdoptionCenter {
        animals.removeIf(animal -> animal.isCleansed() == false);
     }
 
-    public void adopt() {
-        // Implementation for adopting animals
+    private int adoptigAnimal() {
+        List<Animal> clinsedanimallist =new ArrayList<>();
+        int adoptedCount = 0;
+        if(animals.size() != 0) {
+            for (int i = 0; i < animals.size() ; i++) {
+                if(animals.get(i).isCleansed() == true) {
+                    clinsedanimallist.add(animals.get(i));
+                }
+            }
+            adoptedCount = clinsedanimallist.size();
+            animals.removeIf(clinsedanimallist::contains);
+
+
+        }
+        return adoptedCount;
+
     }
 
     public String getName() {
         return name;
     }
+
+
 }
