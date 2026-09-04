@@ -19,10 +19,20 @@ public class Engine {
     private int adoptedAnimals = 0;
     private static final String SEPARATOR = "\n";
 
+    /**
+     * Létrehoz egy új futtató motorhoz tartozó kezelőt a megadott felhasználói felülethez.
+     *
+     * @param userInterface a felhasználói felület, amely a parancsokat kezeli
+     */
     public Engine(UserInterface userInterface) {
         this.userInterface = userInterface;
         this.isRunning = true;
     }
+
+    /**
+     * Fő ciklus, amely addig dolgozik, amíg a motor fut.
+     * Minden lépésben beolvas egy parancsot, feldolgozza, majd folytatja a működést.
+     */
 
     public void run() {
         while (isRunning) {
@@ -30,6 +40,13 @@ public class Engine {
         }
         userInterface.end();
     }
+
+    /**
+     * Feldolgozza a kapott parancsot, és a megfelelő műveletet hajtja végre.
+     *
+     * @param command a feldolgozandó parancs szövege
+     */
+
 
     protected void process(String command) {
         String[] commandList = commandSplitter(command);
@@ -69,6 +86,11 @@ public class Engine {
         }
     }
 
+    /**
+     * Regisztrál egy új kutyát a megadott örökbefogadó központban.
+     *
+     * @param commandList a parancs részei: név, életkor, fajta, központ név
+     */
 
     protected void registerDog(String[] commandList) {
         Animal dog = new Dog(commandList[1], Integer.parseInt(commandList[2])
@@ -80,6 +102,12 @@ public class Engine {
         adoptionCenter.addAnimal(dog);
     }
 
+    /**
+     * Regisztrál egy új macskát a megadott örökbefogadó központban.
+     *
+     * @param commandList a parancs részei: név, életkor, fajta, központ név
+     */
+
     private void registerCat(String[] commandList) {
         Animal cat = new Cat(commandList[1], Integer.parseInt(commandList[2])
                 , Integer.parseInt(commandList[3]));
@@ -90,14 +118,28 @@ public class Engine {
         adoptionCenter.addAnimal(cat);
     }
 
+    /**
+     * Leállítja a motor működését.
+     */
 
     protected void stop() {
         this.isRunning = false;
     }
 
+    /**
+     * Érvénytelen parancs esetén értesíti a felhasználót.
+     */
+
     protected void invalidCommand() {
         userInterface.invalidCommand();
     }
+
+    /**
+     * A parancs szövegét feldarabolja "|" karakterek mentén, majd eltávolítja a felesleges szóközöket.
+     *
+     * @param command a feldarabolandó parancs
+     * @return a parancs részeiből álló tömb
+     */
 
     protected String[] commandSplitter(String command) {
         String[] parts = command.split("\\| ");
@@ -106,6 +148,12 @@ public class Engine {
         }
         return parts;
     }
+
+    /**
+     * Összegzi, hogy az összes örökbefogadó központban hány állat vár örökbefogadásra.
+     *
+     * @return a befogadásra váró állatok száma
+     */
 
     public int allAdaptionsWitingsAnimals() {
         int waitingAnimals = 0;
@@ -117,6 +165,11 @@ public class Engine {
         }
         return waitingAnimals;
     }
+
+    /**
+     * Kiírja a rendszer aktuális összegzését, beleértve az örökbefogadó központok számát,
+     * az örökbefogadott és befogadásra váró állatok mennyiségét, valamint a tisztításra váró állatokat.
+     */
 
     protected void printStatus() {
         StringBuilder sb = new StringBuilder();
