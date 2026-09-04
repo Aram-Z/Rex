@@ -2,9 +2,12 @@ import animal.Animal;
 import animal.Cat;
 import animal.Dog;
 import center.AdoptionCenter;
+import center.CleansingCenter;
 import userInterface.UserInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static javax.swing.plaf.synth.Region.SEPARATOR;
@@ -13,6 +16,8 @@ public class Engine {
     private boolean isRunning;
     private final UserInterface userInterface;
     private Map<String, AdoptionCenter> adoptionCenters = new HashMap<>();
+    private CleansingCenter cleansingCenter;
+    private int adoptedAnimals = 0;
     private static final String SEPARATOR = "\n";
 
     public Engine(UserInterface userInterface) {
@@ -37,20 +42,26 @@ public class Engine {
 
             case "RegisterDog":
                 registerDog(commandList);
-
                 break;
+
             case "RegisterCat":
                 registerCat(commandList);
                 break;
+
             case "SendForCleansing":
-                SendForCleansing(commandList[4]);
-
+                adoptionCenters.get(commandList[1]).sendForCleansing(cleansingCenter);
                 break;
-            case "Rest":
 
+            case "Cleanse":
+                cleansingCenter.cleanse();
                 break;
+
+                case "Adopt":
+                adoptedAnimals += adoptionCenters.get(commandList[1]).adoptigAnimal();
+                    break;
+
             case "PrintStatus":
-                printStatus();
+//                printStatus();
                 break;
             case "Quit":
                 stop();
@@ -60,13 +71,9 @@ public class Engine {
         }
     }
 
-    private void sendForCleansing(String adoptionCenterName) {
-        AdoptionCenter adoptionCenter = adoptionCenters.get(adoptionCenterName);
 
-        if (adoptionCenter != null) {
-            adoptionCenter.getClass(cleansingCenter);
-        }
-    }
+
+
 
 
     protected void registerDog(String[] commandList) {
@@ -88,6 +95,8 @@ public class Engine {
         AdoptionCenter adoptionCenter = adoptionCenters.get(adoptionCenterName);
         adoptionCenter.addAnimal(cat);
     }
+
+
 
 
     protected void stop() {
@@ -120,19 +129,19 @@ public class Engine {
         return parts;
     }
 
-    protected void printStatus() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Animal name: ").append(animal.getName()).append(SEPARATOR)
-                .append("Age: ").append(animal.getAge()).append(SEPARATOR)
-                .append("Skill: ").append(animal.getSkill()).append(SEPARATOR)
-                .append("Camps: ").append(animal.getCampList().size());
-        if (!animal.getCampList().isEmpty()) {
-            for (Camp camp : animal.getCampList()) {
-                sb.append(camp);
-            }
-        }
-        this.userInterface.printMessage(sb.toString());
-    }
+//    protected void printStatus(Animal animal) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Animal name: ").append(animal.getName()).append(SEPARATOR)
+//                .append("Age: ").append(animal.getAge()).append(SEPARATOR)
+//                .append("Skill: ").append(animal.getSkill()).append(SEPARATOR)
+//                .append("Camps: ").append(animal.getCampList().size());
+//        if (!animal.getCampList().isEmpty()) {
+//            for (Camp camp : animal.getCampList()) {
+//                sb.append(camp);
+//            }
+//        }
+//        this.userInterface.printMessage(sb.toString());
+//    }
 
 
 }
